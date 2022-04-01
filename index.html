@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="./generateGrid.js"></script>
+    <link rel="stylesheet" href="./style.css">
     <title>Etch-a-Sketch</title>
 </head>
 <body>
@@ -16,7 +17,16 @@
     <div id="grid-wrapper"></div>
     <script>
         (function(){
-            document.getElementById('grid-size-button').addEventListener('click', generateGrid);
+            const gridInput   = document.getElementById('grid-size-input');
+            const gridButton  = document.getElementById('grid-size-button');
+            const gridWrapper = document.getElementById('grid-wrapper');
+
+            const gridMaker = () => generateGrid(+gridInput.value || 0, gridWrapper);            
+            gridButton.addEventListener('click', gridMaker);
+            gridInput.addEventListener('keydown', (e) => {if(e.keyCode === 13) gridMaker()});
+            
+            gridInput.value = "64";
+            gridMaker();
         })();
     </script>
 </body>

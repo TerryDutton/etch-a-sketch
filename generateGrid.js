@@ -22,8 +22,8 @@ const generateGrid = (function(){
     }
 
     function createElementWithClassName(element, className){
-        const element = document.createElement(element);
-        element.classList.add(className);
-        return element;
+        const e = document.createElement(element);
+        e.classList.add(className);
+        return e;
     }
 })();

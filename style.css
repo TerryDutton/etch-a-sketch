@@ -1,0 +1,25 @@
+#grid-wrapper {
+    --border-settings: 1px solid black;
+    --pixel-side-length: 5px;
+
+    border-bottom: var(--border-settings);
+    border-right:  var(--border-settings);
+    display: inline-block;
+    margin-top: 10px;
+}
+
+#grid-wrapper:empty {
+    border: none;
+}
+
+.pixel {
+    border-left: var(--border-settings);
+    border-top:  var(--border-settings);
+    display: inline-block;
+    height: var(--pixel-side-length);
+    width:  var(--pixel-side-length);
+}
+
+.row {
+    display: flex; 
+}
