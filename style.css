@@ -15,9 +15,12 @@
 .pixel {
     border-left: var(--border-settings);
     border-top:  var(--border-settings);
-    display: inline-block;
+
     height: var(--pixel-side-length);
     width:  var(--pixel-side-length);
+
+    display: inline-block;
+    background-color: white;
 }
 
 .row {
