@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="./generateGrid.js"></script>
-    <script src="./darkenPixel.js"></script>
+    <script src="./getGridGenerator.js"></script>
+    <script src="./getDrawHandlers.js"></script>
     <link rel="stylesheet" href="./style.css">
     <title>Etch-a-Sketch</title>
 </head>
@@ -13,22 +13,39 @@
     <h1>Etch-a-Sketch</h1>
     <div id="controls-wrapper">
         <label>Grid size: <input id="grid-size-input" type="number"></label>
-        <button id="grid-size-button">Set</button>
+        <button id="grid-size-button">Refresh Grid</button>
+        <div id="radio-wrapper">
+            <label><input type="radio" name="pen-type" value="pen">Pen</label>
+            <label><input type="radio" name="pen-type" value="pencil">Pencil</label>
+            <label><input type="radio" name="pen-type" value="glitter">Glitter-Pen</label>
+        </div>
     </div>
     <div id="grid-wrapper"></div>
     <script>
         (function(){
-            const gridInput   = document.getElementById('grid-size-input');
-            const gridButton  = document.getElementById('grid-size-button');
-            const gridWrapper = document.getElementById('grid-wrapper');
+            const gridInput    = document.getElementById('grid-size-input');
+            const gridButton   = document.getElementById('grid-size-button');
+            const gridWrapper  = document.getElementById('grid-wrapper');
+            const radioButtons = document.querySelectorAll('input[type="radio"][name="pen-type"]');
 
-            const gridMaker = () => generateGrid(+gridInput.value, gridWrapper);
+            const {changeNib, draw} = getDrawHandlers();
+            const generateGrid = getGridGenerator();
+            const generateGridFromInputValue = () => generateGrid(+gridInput.value, gridWrapper);
+
+            gridButton.addEventListener('click', generateGridFromInputValue);
+            gridInput.addEventListener('keydown', e => {if(e.key === "Enter") generateGridFromInputValue()});
+            gridWrapper.addEventListener('mousedown', draw);
+            gridWrapper.addEventListener('mouseover', draw);
+            radioButtons.forEach(radioButton => radioButton.addEventListener('click', function(e){
+                changeNib(this.value);
+            }));
+
             gridInput.value = "64";
-            gridMaker();
+            generateGridFromInputValue();
 
-            gridButton.addEventListener('click', gridMaker);
-            gridInput.addEventListener('keydown', (e) => {if(e.key === "Enter") gridMaker()});
-            gridWrapper.addEventListener('mouseover', darkenPixel);
+            const penRadio = [...radioButtons].find(b => b.value === 'pen');
+            penRadio.setAttribute('checked', true);
+            changeNib('pen');
         })();
     </script>
 </body>
