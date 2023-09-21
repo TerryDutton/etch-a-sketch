@@ -25,19 +25,25 @@ const getDrawHandlers = function(){
         pencil: darkenSquareWithEachPass, 
         glitter: drawRandomColour
     };
-    let nibType = '';
+
+    let currentNib = nibs.pen;
     
     const draw = event => {
-        const t = event.explicitOriginalTarget;
+        const t = event.explicitOriginalTarget || event.target;
         const isPixel = t.classList.contains('pixel');
         const isHoldingMouseButton = event.buttons === 1;
     
         if(isHoldingMouseButton && isPixel) {
-            const penFunction = nibs[nibType] ? nibs[nibType] : nibs.pen;
-            t.style.backgroundColor = penFunction(t);
+            t.style.backgroundColor = currentNib(t);
         }
     };
-    const changeNib = type => nibType = type;
 
-    return {changeNib, draw};
+    const changeNib = type => {
+        if (nibs[type]) {
+            currentNib = nibs[type];
+        }
+        else throw new Error(`Invalid nib type '${type}'`);
+    };
+
+    return { changeNib, draw };
 }
